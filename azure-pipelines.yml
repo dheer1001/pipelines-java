@@ -20,3 +20,21 @@ steps:
     publishJUnitResults: true
     testResultsFiles: '**/surefire-reports/TEST-*.xml'
     goals: 'package'
+
+# Prepare Analysis Configuration task
+- task: SonarQubePrepare@5
+  inputs:
+    SonarQube: 'SonarQube QA'
+    scannerMode: 'CLI'
+    configMode: 'manual'
+    cliProjectKey: 'Sample_Java'
+    extraProperties: |
+       sonar.verbose=true
+       sonar.exclusions=**/*.java
+    
+# Run Code Analysis task
+- task: SonarQubeAnalyze@5
+# Publish Quality Gate Result task
+- task: SonarQubePublish@5
+  inputs:
+    pollingTimeoutSec: '300'
